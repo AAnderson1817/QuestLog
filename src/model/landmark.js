@@ -8,6 +8,10 @@ let landMarkSchema = new Schema ({
     type: String,
     required:true
 },
+  marktype: {
+    type: String,
+    required: true
+  },
 
   avgcost: Number,
 
@@ -18,8 +22,8 @@ let landMarkSchema = new Schema ({
 
   reviews: [{ type: Schema.Types.ObjectId, ref: 'Review'}],
 
-  quests: [{ type: Schema.Types.ObjectId, ref: "Quest"}],
-  
+  quests: [{ type: Schema.Types.ObjectId, ref: 'Quest'}],
+
 });
 
 module.exports = mongoose.model('Landmark', landMarkSchema);

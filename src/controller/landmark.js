@@ -2,15 +2,20 @@ import mongoose from 'mongoose';
 import { Router } from 'express';
 import bodyParser from 'body-parser';
 import Landmark from '../model/landmark';
+import Review from '../model/review';
+import Quest from '../model/quest';
 
 
 export default({ config, db }) => {
   let api = Router();
 
-// '/v1/landmark/add'
+// '/v1/landmark/add' Create
 api.post('/add', (req, res) => {
   let newMark = new Landmark();
   newMark.name = req.body.name;
+  newMark.marktype = req.body.marktype;
+  newMark.avgcost = req.body.avgcost;
+  newMark.geometry.coordinates = req.body.geometry.coordinates;
 
   newMark.save(err => {
     if(err){
@@ -80,8 +85,8 @@ api.delete('/:id', (req,res) => {
   });
 });
 
-//Add a quest to a landmark
-// '/v1/landmark/quest/add/:id'
+//Add a review to a landmark
+// '/v1/landmark/review/add/:id'
 
 api.post('/reviews/add/:id', (req,res) => {
   Landmark.findById(req.params.id, (err, landmark) => {
@@ -116,9 +121,9 @@ api.post('/quests/add/:id', (req,res) => {
     let newQuest = new Quest();
 
     newQuest.title = req.body.title;
-    newQuest.text = req.body.text;
+    newQuest.description = req.body.description;
     newQuest.landmark = landmark._id;
-    newQuest.save((err, review) => {
+    newQuest.save((err, quest) => {
       if (err) {
         res.send(err);
       }

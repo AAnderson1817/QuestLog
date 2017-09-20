@@ -10,11 +10,10 @@ let QuestSchema = new Schema({
   landmark: {
     type: Schema.Types.ObjectId,
     ref: 'Landmark',
-    required: true
+    required:true
   },
   description: {
     type: String,
-    required: true
   }
 });
 
