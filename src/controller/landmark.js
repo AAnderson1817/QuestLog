@@ -80,5 +80,58 @@ api.delete('/:id', (req,res) => {
   });
 });
 
+//Add a quest to a landmark
+// '/v1/landmark/quest/add/:id'
+
+api.post('/reviews/add/:id', (req,res) => {
+  Landmark.findById(req.params.id, (err, landmark) => {
+    if(err) {
+      res.send(err);
+    }
+    let newReview = new Review();
+
+    newReview.title = req.body.title;
+    newReview.text = req.body.text;
+    newReview.landmark = landmark._id;
+    newReview.save((err, review) => {
+      if (err) {
+        res.send(err);
+      }
+      landmark.reviews.push(newReview);
+      landmark.save(err => {
+        if (err) {
+          res.send(err);
+        }
+        res.json({ message: "Landmark review saved" });
+      });
+    });
+  });
+});
+
+api.post('/quests/add/:id', (req,res) => {
+  Landmark.findById(req.params.id, (err, landmark) => {
+    if(err) {
+      res.send(err);
+    }
+    let newQuest = new Quest();
+
+    newQuest.title = req.body.title;
+    newQuest.text = req.body.text;
+    newQuest.landmark = landmark._id;
+    newQuest.save((err, review) => {
+      if (err) {
+        res.send(err);
+      }
+      landmark.quests.push(newQuest);
+      landmark.save(err => {
+        if (err) {
+          res.send(err);
+        }
+        res.json({ message: "Landmark quest saved" });
+      });
+    });
+  });
+});
+
 return api;
 }
