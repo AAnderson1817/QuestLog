@@ -9,7 +9,10 @@ import Quest from '../model/quest';
 export default({ config, db }) => {
   let api = Router();
 
-// '/v1/landmark/add' Create
+//Begin LANDMARK routes
+
+//Create a new landmark
+// '/v1/landmark/add'
 api.post('/add', (req, res) => {
   let newMark = new Landmark();
   newMark.name = req.body.name;
@@ -25,6 +28,7 @@ api.post('/add', (req, res) => {
   });
 });
 
+//Read all landmarks
 // '/v1/landmark' Get ALL
 
 api.get('/', (req,res) => {
@@ -35,6 +39,8 @@ api.get('/', (req,res) => {
     res.json(landmarks);
   });
 });
+
+//Read one landmark
 // '/v1/landmark/:id' Get one by ID
 api.get('/:id', (req, res) => {
   console.log(req.body);
@@ -46,6 +52,7 @@ api.get('/:id', (req, res) => {
   });
 });
 
+//Update a landmark
 // '/v1/landmark/:id' Update
 
 api.put('/:id', (req,res) => {
@@ -63,15 +70,7 @@ api.put('/:id', (req,res) => {
   });
 });
 
-api.get('/name', (req,res) => {
-  Landmark.find(req.params.name , (err, landmark) =>{
-  if(err) {
-    res.send(err);
-    };
-    res.send(landmark);
-  });
-});
-
+//Delete a landmark
 // '/v1/landmark/:id' Delete
 
 api.delete('/:id', (req,res) => {
@@ -85,10 +84,10 @@ api.delete('/:id', (req,res) => {
   });
 });
 
-//End general landmark routes
+//End LANDMARK routes-----------------------
 
 
-//Begin routes that handle reviews of landmarks
+//Begin routes that handle REVIEWS of landmarks
 
 //Add
 // '/v1/landmark/review/add/:id'
@@ -150,10 +149,10 @@ api.delete('/reviews/delete/:id', (req,res) => {
   });
 });
 
-//End routes that handle reviews
+//End routes that handle REVIEWS-----------------------
 
 
-//Begin routes that handle quests
+//Begin routes that handle QUESTS
 
 //Create a new quest
 // '/v1/landmark/quests/add/:id'
@@ -227,7 +226,8 @@ api.delete('/quests/delete/:id', (req,res) => {
   });
 });
 
-//End routes that handle quests
+//End routes that handle QUESTS-----------------------
+
 
 return api;
 }
