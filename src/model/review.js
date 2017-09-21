@@ -7,6 +7,10 @@ let ReviewSchema = new Schema({
     type: String,
     required: true
   },
+  text: {
+    type: String,
+    required: true
+  },
   landmark: {
     type: Schema.Types.ObjectId,
     ref: 'Landmark',

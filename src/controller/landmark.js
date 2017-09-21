@@ -77,7 +77,7 @@ api.get('/name', (req,res) => {
 api.delete('/:id', (req,res) => {
   Landmark.remove({
     _id: req.params.id
-  }, (err, restaurant) => {
+  }, (err, landmark) => {
     if(err) {
       res.send(err);
     }
@@ -85,7 +85,12 @@ api.delete('/:id', (req,res) => {
   });
 });
 
-//Add a review to a landmark
+//End general landmark routes
+
+
+//Begin routes that handle reviews of landmarks
+
+//Add
 // '/v1/landmark/review/add/:id'
 
 api.post('/reviews/add/:id', (req,res) => {
@@ -113,6 +118,46 @@ api.post('/reviews/add/:id', (req,res) => {
   });
 });
 
+//
+
+//Get reviews of particular landmark
+//'/v1/landmark/reviews/:id'
+
+api.get('/reviews/:id', (req,res) => {
+  Review.find({ landmark: req.params.id}, (err, reviews) => {
+    if (err){
+      res.send(err);
+    }
+    res.json(reviews)
+  })
+})
+
+//
+
+//Update a review goes here
+
+//
+
+//Delete a review
+api.delete('/reviews/delete/:id', (req,res) => {
+  Review.remove({
+    _id: req.params.id
+  }, (err, review) => {
+    if(err) {
+      res.send(err);
+    }
+    res.json({ message: "Review destroyed! Call The Department of Yelp!"});
+  });
+});
+
+//End routes that handle reviews
+
+
+//Begin routes that handle quests
+
+//Create a new quest
+// '/v1/landmark/quests/add/:id'
+
 api.post('/quests/add/:id', (req,res) => {
   Landmark.findById(req.params.id, (err, landmark) => {
     if(err) {
@@ -137,6 +182,52 @@ api.post('/quests/add/:id', (req,res) => {
     });
   });
 });
+
+//Read a quest
+// '/v1/landmark/quests/:id'
+
+api.get('/quests/:id', (req,res) => {
+  Quest.find({ landmark: req.params.id}, (err, quests) => {
+    if (err){
+      res.send(err);
+    }
+    res.json(quests)
+  })
+})
+
+//Update a quest
+// '/v1/landmark/quests/:id'
+
+api.put('/quests/:id', (req,res) => {
+  Quest.findById(req.params.id, (err, quest) => {
+    if(err){
+      res.send(err);
+    }
+    quest.title = req.body.title;
+    quest.description = req.body.description;
+    quest.save(err => {
+      if(err) {
+      res.send(err);
+    }
+    res.json({ message: "Quest updated" });
+    });
+  });
+});
+
+//Delete a quest
+// '/v1/landmark/quests/delete/:id'
+api.delete('/quests/delete/:id', (req,res) => {
+  Quest.remove({
+    _id: req.params.id
+  }, (err, quest) => {
+    if(err) {
+      res.send(err);
+    }
+    res.json({ message: "Quest destroyed! Call The Department of RPG's!"});
+  });
+});
+
+//End routes that handle quests
 
 return api;
 }
