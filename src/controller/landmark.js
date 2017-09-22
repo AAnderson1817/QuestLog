@@ -5,6 +5,10 @@ import Landmark from '../model/landmark';
 import Review from '../model/review';
 import Quest from '../model/quest';
 
+import { authenticate } from '../middleware/authMiddleware';
+
+
+
 
 export default({ config, db }) => {
   let api = Router();
@@ -13,7 +17,7 @@ export default({ config, db }) => {
 
 //Create a new landmark
 // '/v1/landmark/add'
-api.post('/add', (req, res) => {
+api.post('/add', authenticate, (req, res) => {
   let newMark = new Landmark();
   newMark.name = req.body.name;
   newMark.marktype = req.body.marktype;
@@ -55,7 +59,7 @@ api.get('/:id', (req, res) => {
 //Update a landmark
 // '/v1/landmark/:id' Update
 
-api.put('/:id', (req,res) => {
+api.put('/:id', authenticate, (req,res) => {
   Landmark.findById(req.params.id, (err, landmark) => {
     if(err){
       res.send(err);
@@ -73,7 +77,7 @@ api.put('/:id', (req,res) => {
 //Delete a landmark
 // '/v1/landmark/:id' Delete
 
-api.delete('/:id', (req,res) => {
+api.delete('/:id', authenticate, (req,res) => {
   Landmark.remove({
     _id: req.params.id
   }, (err, landmark) => {
@@ -92,7 +96,7 @@ api.delete('/:id', (req,res) => {
 //Add
 // '/v1/landmark/review/add/:id'
 
-api.post('/reviews/add/:id', (req,res) => {
+api.post('/reviews/add/:id', authenticate, (req,res) => {
   Landmark.findById(req.params.id, (err, landmark) => {
     if(err) {
       res.send(err);
@@ -138,7 +142,7 @@ api.get('/reviews/:id', (req,res) => {
 //
 
 //Delete a review
-api.delete('/reviews/delete/:id', (req,res) => {
+api.delete('/reviews/delete/:id', authenticate, (req,res) => {
   Review.remove({
     _id: req.params.id
   }, (err, review) => {
@@ -157,7 +161,7 @@ api.delete('/reviews/delete/:id', (req,res) => {
 //Create a new quest
 // '/v1/landmark/quests/add/:id'
 
-api.post('/quests/add/:id', (req,res) => {
+api.post('/quests/add/:id', authenticate, (req,res) => {
   Landmark.findById(req.params.id, (err, landmark) => {
     if(err) {
       res.send(err);
@@ -197,7 +201,7 @@ api.get('/quests/:id', (req,res) => {
 //Update a quest
 // '/v1/landmark/quests/:id'
 
-api.put('/quests/:id', (req,res) => {
+api.put('/quests/:id', authenticate, (req,res) => {
   Quest.findById(req.params.id, (err, quest) => {
     if(err){
       res.send(err);
@@ -215,7 +219,7 @@ api.put('/quests/:id', (req,res) => {
 
 //Delete a quest
 // '/v1/landmark/quests/delete/:id'
-api.delete('/quests/delete/:id', (req,res) => {
+api.delete('/quests/delete/:id', authenticate, (req,res) => {
   Quest.remove({
     _id: req.params.id
   }, (err, quest) => {
